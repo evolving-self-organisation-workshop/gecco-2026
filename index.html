@@ -1,0 +1,1131 @@
+<!DOCTYPE HTML>
+<!--
+	Stellar by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Stellar by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<header id="header" class="tile-header">
+					<!-- Logo container with EvoSelf and GECCO -->
+					<div class="logo-container">
+						<div id="logo-text" class="logo-text-container"></div>
+						<img src="images/gecco_logo.png" alt="GECCO" class="gecco-logo">
+					</div>
+					
+					<!-- Mutate button -->
+					<button id="mutateButton" class="mutate-button">Mutate</button>
+					
+					<!-- Grid and button container -->
+					<div class="grid-container">
+					<!-- Grid content -->
+					<div class="tile-grid">
+					  <!-- Grid tiles will go here -->
+					</div>
+					</div>
+					<!-- Pattern name display -->
+					<div class="pattern-info-box">
+						<div class="pattern-name" id="patternName"></div>
+						<div class="pattern-description" id="patternDescription"></div>
+						<div class="pattern-quote" id="patternQuote"></div>
+					</div>
+				  </header>
+				  
+				  <script>
+					// Pixel font patterns for letters (5x7 grid) - blocky digital style
+					const pixelFont = {
+					  'E': [
+						[1,1,1,1,1],
+						[1,0,0,0,0],
+						[1,1,1,1,0],
+						[1,0,0,0,0],
+						[1,0,0,0,0],
+						[1,0,0,0,0],
+						[1,1,1,1,1]
+					  ],
+					  'V': [
+						[1,0,0,0,1],
+						[1,0,0,0,1],
+						[1,0,0,0,1],
+						[1,0,0,0,1],
+						[1,0,0,0,1],
+						[0,1,0,1,0],
+						[0,0,1,0,0]
+					  ],
+					  'O': [
+						[1,1,1,1,1],
+						[1,0,0,0,1],
+						[1,0,0,0,1],
+						[1,0,0,0,1],
+						[1,0,0,0,1],
+						[1,0,0,0,1],
+						[1,1,1,1,1]
+					  ],
+					  'S': [
+						[1,1,1,1,1],
+						[1,0,0,0,0],
+						[1,0,0,0,0],
+						[1,1,1,1,1],
+						[0,0,0,0,1],
+						[0,0,0,0,1],
+						[1,1,1,1,1]
+					  ],
+					  'L': [
+						[1,0,0,0,0],
+						[1,0,0,0,0],
+						[1,0,0,0,0],
+						[1,0,0,0,0],
+						[1,0,0,0,0],
+						[1,0,0,0,0],
+						[1,1,1,1,1]
+					  ],
+					  'F': [
+						[1,1,1,1,1],
+						[1,0,0,0,0],
+						[1,0,0,0,0],
+						[1,1,1,1,0],
+						[1,0,0,0,0],
+						[1,0,0,0,0],
+						[1,0,0,0,0]
+					  ]
+					};
+
+					// Function to create tile-based letter
+					function createLetterTile(letter, isWhite) {
+					  const letterContainer = document.createElement('div');
+					  letterContainer.className = 'letter-container';
+					  
+					  const pattern = pixelFont[letter];
+					  if (!pattern) return letterContainer;
+					  
+					  const rows = pattern.length;
+					  const cols = pattern[0].length;
+					  
+					  letterContainer.style.display = 'grid';
+					  letterContainer.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+					  letterContainer.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+					  letterContainer.style.gap = '3px';
+					  
+					  for (let row = 0; row < rows; row++) {
+						for (let col = 0; col < cols; col++) {
+						  const tile = document.createElement('div');
+						  tile.className = 'logo-tile';
+						  if (pattern[row][col] === 1) {
+							tile.classList.add(isWhite ? 'logo-tile-white' : 'logo-tile-black');
+						  } else {
+							tile.classList.add('logo-tile-transparent');
+						  }
+						  letterContainer.appendChild(tile);
+						}
+					  }
+					  
+					  return letterContainer;
+					}
+
+					// Function to create the logo text
+					function createLogoText() {
+					  const logoContainer = document.getElementById('logo-text');
+					  if (!logoContainer) return;
+					  
+					  logoContainer.innerHTML = '';
+					  logoContainer.style.display = 'flex';
+					  logoContainer.style.gap = '12px';
+					  logoContainer.style.alignItems = 'center';
+					  
+					  // Create "Evo" (white) - all capitals
+					  const evo = ['E', 'V', 'O'];
+					  evo.forEach((char, index) => {
+						const letter = createLetterTile(char, true);
+						logoContainer.appendChild(letter);
+					  });
+					  
+					  // Create "Self" (black) - all capitals
+					  const self = ['S', 'E', 'L', 'F'];
+					  self.forEach((char, index) => {
+						const letter = createLetterTile(char, false);
+						logoContainer.appendChild(letter);
+					  });
+					}
+
+					// Create logo on page load
+					document.addEventListener("DOMContentLoaded", function() {
+					  createLogoText();
+					});
+
+					document.addEventListener("DOMContentLoaded", function() {
+					  const grid = document.querySelector(".tile-grid");
+					  const patternNameElement = document.getElementById("patternName");
+					  const patternDescriptionElement = document.getElementById("patternDescription");
+					  const patternQuoteElement = document.getElementById("patternQuote");
+					  const mutateButton = document.getElementById("mutateButton");
+					  const tileSize = 60; // Size of each tile
+					  let tiles = [];
+					  let gridColumns = 0;
+					  let gridRows = 0;
+					  let currentPattern = null;
+					  let mutationCount = 0;
+					  let basePatternName = null;
+				  
+					  // Game of Life pattern library with wiki URLs
+					  // Patterns are defined relative to their top-left corner (0,0)
+					  const patterns = [
+						{
+						  name: "Glider",
+						  wikiUrl: "https://conwaylife.com/wiki/Glider",
+						  cells: [
+							{ row: 0, col: 1 },
+							{ row: 1, col: 2 },
+							{ row: 2, col: 0 },
+							{ row: 2, col: 1 },
+							{ row: 2, col: 2 }
+						  ]
+						},
+						{
+						  name: "Blinker",
+						  wikiUrl: "https://conwaylife.com/wiki/Blinker",
+						  cells: [
+							{ row: 0, col: 1 },
+							{ row: 1, col: 1 },
+							{ row: 2, col: 1 }
+						  ]
+						},
+						{
+						  name: "Toad",
+						  wikiUrl: "https://conwaylife.com/wiki/Toad",
+						  cells: [
+							{ row: 1, col: 1 },
+							{ row: 1, col: 2 },
+							{ row: 1, col: 3 },
+							{ row: 2, col: 0 },
+							{ row: 2, col: 1 },
+							{ row: 2, col: 2 }
+						  ]
+						},
+						{
+						  name: "Beacon",
+						  wikiUrl: "https://conwaylife.com/wiki/Beacon",
+						  cells: [
+							{ row: 0, col: 0 },
+							{ row: 0, col: 1 },
+							{ row: 1, col: 0 },
+							{ row: 1, col: 1 },
+							{ row: 2, col: 2 },
+							{ row: 2, col: 3 },
+							{ row: 3, col: 2 },
+							{ row: 3, col: 3 }
+						  ]
+						},
+						{
+						  name: "Pulsar",
+						  wikiUrl: "https://conwaylife.com/wiki/Pulsar",
+						  cells: [
+							{ row: 0, col: 2 }, { row: 0, col: 3 }, { row: 0, col: 4 },
+							{ row: 0, col: 8 }, { row: 0, col: 9 }, { row: 0, col: 10 },
+							{ row: 2, col: 0 }, { row: 2, col: 5 }, { row: 2, col: 7 }, { row: 2, col: 12 },
+							{ row: 3, col: 0 }, { row: 3, col: 5 }, { row: 3, col: 7 }, { row: 3, col: 12 },
+							{ row: 4, col: 0 }, { row: 4, col: 5 }, { row: 4, col: 7 }, { row: 4, col: 12 },
+							{ row: 5, col: 2 }, { row: 5, col: 3 }, { row: 5, col: 4 },
+							{ row: 5, col: 8 }, { row: 5, col: 9 }, { row: 5, col: 10 },
+							{ row: 7, col: 2 }, { row: 7, col: 3 }, { row: 7, col: 4 },
+							{ row: 7, col: 8 }, { row: 7, col: 9 }, { row: 7, col: 10 },
+							{ row: 8, col: 0 }, { row: 8, col: 5 }, { row: 8, col: 7 }, { row: 8, col: 12 },
+							{ row: 9, col: 0 }, { row: 9, col: 5 }, { row: 9, col: 7 }, { row: 9, col: 12 },
+							{ row: 10, col: 0 }, { row: 10, col: 5 }, { row: 10, col: 7 }, { row: 10, col: 12 },
+							{ row: 12, col: 2 }, { row: 12, col: 3 }, { row: 12, col: 4 },
+							{ row: 12, col: 8 }, { row: 12, col: 9 }, { row: 12, col: 10 }
+						  ]
+						},
+						{
+						  name: "R-Pentomino",
+						  wikiUrl: "https://conwaylife.com/wiki/R-pentomino",
+						  cells: [
+							{ row: 0, col: 1 },
+							{ row: 0, col: 2 },
+							{ row: 1, col: 0 },
+							{ row: 1, col: 1 },
+							{ row: 2, col: 1 }
+						  ]
+						},
+						{
+						  name: "Acorn",
+						  wikiUrl: "https://conwaylife.com/wiki/Acorn",
+						  cells: [
+							{ row: 0, col: 1 },
+							{ row: 1, col: 3 },
+							{ row: 2, col: 0 },
+							{ row: 2, col: 1 },
+							{ row: 2, col: 4 },
+							{ row: 2, col: 5 },
+							{ row: 2, col: 6 }
+						  ]
+						},
+						{
+						  name: "Lightweight Spaceship",
+						  wikiUrl: "https://conwaylife.com/wiki/Lightweight_spaceship",
+						  cells: [
+							{ row: 0, col: 1 }, { row: 0, col: 4 },
+							{ row: 1, col: 0 },
+							{ row: 2, col: 0 }, { row: 2, col: 4 },
+							{ row: 3, col: 0 }, { row: 3, col: 1 }, { row: 3, col: 2 }, { row: 3, col: 3 }
+						  ]
+						},
+						{
+						  name: "Tub",
+						  wikiUrl: "https://conwaylife.com/wiki/Tub",
+						  cells: [
+							{ row: 0, col: 1 },
+							{ row: 1, col: 0 },
+							{ row: 1, col: 2 },
+							{ row: 2, col: 1 }
+						  ]
+						},
+						{
+						  name: "Block",
+						  wikiUrl: "https://conwaylife.com/wiki/Block",
+						  cells: [
+							{ row: 0, col: 0 },
+							{ row: 0, col: 1 },
+							{ row: 1, col: 0 },
+							{ row: 1, col: 1 }
+						  ]
+						},
+						{
+						  name: "Beehive",
+						  wikiUrl: "https://conwaylife.com/wiki/Beehive",
+						  cells: [
+							{ row: 0, col: 1 },
+							{ row: 0, col: 2 },
+							{ row: 1, col: 0 },
+							{ row: 1, col: 3 },
+							{ row: 2, col: 1 },
+							{ row: 2, col: 2 }
+						  ]
+						},
+						{
+						  name: "Loaf",
+						  wikiUrl: "https://conwaylife.com/wiki/Loaf",
+						  cells: [
+							{ row: 0, col: 1 },
+							{ row: 0, col: 2 },
+							{ row: 1, col: 0 },
+							{ row: 1, col: 3 },
+							{ row: 2, col: 1 },
+							{ row: 2, col: 3 },
+							{ row: 3, col: 2 }
+						  ]
+						},
+						{
+						  name: "Boat",
+						  wikiUrl: "https://conwaylife.com/wiki/Boat",
+						  cells: [
+							{ row: 0, col: 0 },
+							{ row: 0, col: 1 },
+							{ row: 1, col: 0 },
+							{ row: 1, col: 2 },
+							{ row: 2, col: 1 }
+						  ]
+						}
+					  ];
+				  
+					  // Function to get a random pattern
+					  function getRandomPattern() {
+						return patterns[Math.floor(Math.random() * patterns.length)];
+					  }
+				  
+					  // Function to center a pattern on the grid
+					  function centerPattern(pattern, gridCols, gridRows) {
+						if (!pattern || pattern.cells.length === 0) return [];
+				  
+						// Find the bounding box of the pattern
+						let minRow = Math.min(...pattern.cells.map(c => c.row));
+						let maxRow = Math.max(...pattern.cells.map(c => c.row));
+						let minCol = Math.min(...pattern.cells.map(c => c.col));
+						let maxCol = Math.max(...pattern.cells.map(c => c.col));
+				  
+						const patternHeight = maxRow - minRow + 1;
+						const patternWidth = maxCol - minCol + 1;
+				  
+						// Calculate center position
+						const centerRow = Math.floor((gridRows - patternHeight) / 2);
+						const centerCol = Math.floor((gridCols - patternWidth) / 2);
+				  
+						// Offset all cells to center the pattern
+						return pattern.cells.map(cell => ({
+						  row: centerRow + (cell.row - minRow),
+						  col: centerCol + (cell.col - minCol)
+						}));
+					  }
+				  
+					  // Function to recalculate and update the grid
+					  function updateGrid() {
+						const gridWidth = grid.offsetWidth; // Get the width of the grid container
+						gridColumns = Math.floor(gridWidth / tileSize); // Calculate the number of columns based on the width
+						gridRows = Math.floor(gridColumns) / 2; // Let's keep the rows same as columns for a square grid
+				  
+						// Update the grid-template-columns and grid-template-rows based on the calculated number of columns and rows
+						grid.style.gridTemplateColumns = `repeat(${gridColumns}, ${tileSize}px)`;
+						grid.style.gridTemplateRows = `repeat(${gridRows}, ${tileSize}px)`;
+				  
+						// Remove existing tiles
+						tiles.forEach(tile => grid.removeChild(tile));
+						tiles = [];
+				  
+						// Create new tiles and add them to the grid
+						for (let i = 0; i < gridColumns * gridRows; i++) {
+						  let tile = document.createElement("div");
+						  tile.classList.add("tile", "black");
+				  
+						  // Create a span element inside the tile to display the white neighbor count
+						  const neighborCount = document.createElement("span");
+						  neighborCount.classList.add("neighbor-count");
+						  tile.appendChild(neighborCount);
+				  
+						  tiles.push(tile); // Store all tiles in an array for easier access
+						  grid.appendChild(tile);
+						}
+				  
+						// Select a random pattern if we don't have one yet
+						if (!currentPattern) {
+						  currentPattern = getRandomPattern();
+						  basePatternName = currentPattern.name;
+						  mutationCount = 0;
+						}
+				  
+						// Center the pattern on the grid
+						const whiteTilePositions = centerPattern(currentPattern, gridColumns, gridRows);
+				  
+						// Set tiles to white based on pattern
+						whiteTilePositions.forEach(pos => {
+						  // Ensure positions are within bounds
+						  if (pos.row >= 0 && pos.row < gridRows && pos.col >= 0 && pos.col < gridColumns) {
+							const index = pos.row * gridColumns + pos.col;
+							if (index >= 0 && index < tiles.length) {
+							  tiles[index].classList.add("white");
+							  tiles[index].classList.remove("black");
+							}
+						  }
+						});
+				  
+						// Update pattern name display
+						if (currentPattern && patternNameElement) {
+						  if (currentPattern.wikiUrl) {
+							patternNameElement.innerHTML = `<a href="${currentPattern.wikiUrl}" target="_blank">${currentPattern.name}</a>`;
+						  } else {
+							patternNameElement.textContent = currentPattern.name;
+						  }
+						  console.log("Pattern name set to:", currentPattern.name);
+						} else {
+						  console.log("Pattern name not set - currentPattern:", currentPattern, "patternNameElement:", patternNameElement);
+						}
+						
+						// Update pattern description
+						if (patternDescriptionElement) {
+						  patternDescriptionElement.textContent = "Patterns randomly fetched from LifeWiki. Mutations randomly flip the value of a single cell within the bounding box of the pattern.";
+						}
+				  
+						// Update pattern quote
+						if (patternQuoteElement) {
+						  patternQuoteElement.innerHTML = '<span class="quote-text"><em>&ldquo;Creditable arguments by respected scientists have led to the unfortunate conclusion that we cannot exist.&rdquo;</em></span><div class="quote-attribution-container"><hr class="quote-separator"><span class="quote-attribution">Stuart Kauffman, The origins of order</span></div>';
+						}
+					  }
+				  
+					  // Function to mutate the pattern by deleting or activating a cell
+					  function mutatePattern() {
+						if (!currentPattern || !currentPattern.cells || currentPattern.cells.length === 0) {
+						  return;
+						}
+				  
+						// Increment mutation count
+						mutationCount++;
+				  
+						// Create a deep copy of the current pattern
+						const mutatedPattern = {
+						  name: basePatternName + " - mutation " + mutationCount,
+						  wikiUrl: currentPattern.wikiUrl,
+						  cells: currentPattern.cells.map(cell => ({ row: cell.row, col: cell.col }))
+						};
+				  
+						// Find the bounding box of the pattern
+						let minRow = Math.min(...mutatedPattern.cells.map(c => c.row));
+						let maxRow = Math.max(...mutatedPattern.cells.map(c => c.row));
+						let minCol = Math.min(...mutatedPattern.cells.map(c => c.col));
+						let maxCol = Math.max(...mutatedPattern.cells.map(c => c.col));
+				  
+						// Expand bounding box slightly to allow mutations at the edges
+						const padding = 2;
+						minRow -= padding;
+						maxRow += padding;
+						minCol -= padding;
+						maxCol += padding;
+				  
+						// 50% probability: delete one cell (make zero)
+						// 50% probability: activate one cell (make one from zero)
+						const shouldDelete = Math.random() < 0.5;
+				  
+						if (shouldDelete && mutatedPattern.cells.length > 1) {
+						  // Delete a random cell
+						  const cellIndex = Math.floor(Math.random() * mutatedPattern.cells.length);
+						  mutatedPattern.cells.splice(cellIndex, 1);
+						} else {
+						  // Activate a new cell within the bounding box
+						  // Find an empty position within the bounding box
+						  let attempts = 0;
+						  let newRow, newCol;
+						  let foundEmpty = false;
+				  
+						  while (attempts < 100) {
+							newRow = minRow + Math.floor(Math.random() * (maxRow - minRow + 1));
+							newCol = minCol + Math.floor(Math.random() * (maxCol - minCol + 1));
+				  
+							// Check if this position is empty (not already a cell)
+							const isOccupied = mutatedPattern.cells.some(c => 
+							  c.row === newRow && c.col === newCol
+							);
+				  
+							if (!isOccupied) {
+							  foundEmpty = true;
+							  break;
+							}
+							attempts++;
+						  }
+				  
+						  // If we found an empty position, add the new cell
+						  if (foundEmpty) {
+							mutatedPattern.cells.push({ row: newRow, col: newCol });
+						  }
+						}
+				  
+						// Update the current pattern
+						currentPattern = mutatedPattern;
+				  
+						// Reset the grid with the mutated pattern
+						updateGrid();
+					  }
+				  
+					  // Add event listener to mutate button
+					  if (mutateButton) {
+						mutateButton.addEventListener("click", mutatePattern);
+					  }
+				  
+					  // Initial grid update
+					  updateGrid();
+				  
+					  // Recalculate grid on window resize
+					  window.addEventListener("resize", updateGrid);
+				  
+					  function GOLUpdate() {
+						const totalTiles = tiles.length; // Total number of tiles
+						let allneighbors = [];
+				  
+						// First loop: Count white neighbors
+						tiles.forEach((tile, index) => {
+						  const row = Math.floor(index / gridColumns); // Get the row of the tile
+						  const col = index % gridColumns; // Get the column of the tile
+				  
+						  let whiteNeighborCount = 0;
+				  
+						  // Four neighbors (top, bottom, left, right) and diagonal neighbors
+						  const neighbors = [
+							{ r: -1, c: 0 },  // Top
+							{ r: 1, c: 0 },   // Bottom
+							{ r: 0, c: -1 },  // Left
+							{ r: 0, c: 1 },   // Right
+							{ r: -1, c: -1 }, // Top-Left diagonal
+							{ r: 1, c: 1 },   // Bottom-Right diagonal
+							{ r: 1, c: -1 },  // Bottom-Left diagonal
+							{ r: -1, c: 1 }    // Top-Right diagonal
+						  ];
+				  
+						  // Count white neighbors
+						  neighbors.forEach(({r, c}) => {
+							const neighborRow = (row + r + gridRows) % gridRows;  // Wrap rows around (toroidal)
+							const neighborCol = (col + c + gridColumns) % gridColumns; // Wrap columns around (toroidal)
+				  
+							// Check if the neighbor is within bounds
+							const neighborIndex = neighborRow * gridColumns + neighborCol;
+							if (tiles[neighborIndex].classList.contains("white")) {
+							  whiteNeighborCount++;
+							}
+						  });
+				  
+						  // Store the white neighbor count for each tile
+						  allneighbors[index] = whiteNeighborCount;
+						});
+				  
+						// Second loop: Update the tiles based on their neighbors' count
+						tiles.forEach((tile, index) => {
+						  const whiteNeighborCount = allneighbors[index];
+				  
+						  // Game of Life rule:
+						  // - If the tile is white and has 2 or 3 white neighbors, it becomes black.
+						  // - If the tile is black and has 3 white neighbors, it becomes white.
+						  if (tile.classList.contains("white") && !(whiteNeighborCount === 2 || whiteNeighborCount === 3)) {
+							tile.classList.remove("white");
+							tile.classList.add("black");
+						  } else if (tile.classList.contains("black") && whiteNeighborCount === 3) {
+							tile.classList.remove("black");
+							tile.classList.add("white");
+						  }
+						});
+					  }
+				  
+					  // Set interval to run GOLUpdate every 1 second
+					  setInterval(GOLUpdate, 1000);
+					});
+				  </script>
+				  
+				  <style>
+					body {
+					  margin: 0;
+					  padding: 0;
+					}
+				  
+					/* Header styling */
+					.tile-header {
+					  display: flex;
+					  flex-direction: column; /* Align image and grid vertically */
+					  justify-content: flex-start;
+					  align-items: center;
+					  height: 100vh; /* Full viewport height */
+					  width: 100%;
+					  position: relative;
+					}
+				  
+					/* Logo container with EvoSelf and GECCO */
+					.logo-container {
+					  display: flex;
+					  align-items: center;
+					  gap: 15px;
+					  position: absolute;
+					  top: 10px;
+					  left: 5em;
+					  z-index: 100;
+					}
+					
+					/* Styling for the logo text container */
+					.logo-text-container {
+					  display: flex;
+					  align-items: center;
+					  gap: 12px;
+					}
+					
+					/* Styling for GECCO logo */
+					.gecco-logo {
+					  max-height: 100px;
+					  width: auto;
+					}
+					
+					.letter-container {
+					  display: grid;
+					  gap: 3px;
+					  height: 68px; /* Fixed height for all letters */
+					}
+					
+					.logo-tile {
+					  width: 8px;
+					  height: 8px;
+					  min-width: 8px;
+					  min-height: 8px;
+					}
+					
+					.logo-tile-white {
+					  background-color: white;
+					}
+					
+					.logo-tile-black {
+					  background-color: black;
+					}
+					
+					.logo-tile-transparent {
+					  background-color: transparent; /* Transparent - shows page background */
+					}
+				  
+					/* Grid and button container */
+					.grid-container {
+					  display: flex;
+					  flex-direction: column;
+					  align-items: center;
+					  justify-content: flex-start;
+					  width: 100%;
+					  max-width: 100%;
+					  height: 85%;
+					  gap: 15px;
+					  box-sizing: border-box;
+					  margin-left: auto;
+					  margin-right: auto;
+					  padding: 0;
+					}
+				  
+					/* Grid container styling */
+					.tile-grid {
+					  display: grid;
+					  width: 100%;
+					  flex: 1;
+					  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Dynamic columns */
+					  grid-template-rows: repeat(auto-fill, minmax(120px, 1fr)); /* Dynamic rows */
+					  gap: 5px; /* Space between tiles */
+					  margin: 0 auto;
+					  padding: 0;
+					  justify-content: center;
+					}
+				  
+					/* Mutate button styling */
+					.mutate-button {
+					  position: absolute;
+					  top: 29px;
+					  right: 5em;
+					  padding: 8px 16px;
+					  font-size: 14px;
+					  font-weight: bold;
+					  color: white;
+					  background-color: #e91e63;
+					  border: none;
+					  border-radius: 8px;
+					  cursor: pointer;
+					  transition: background-color 0.3s ease, transform 0.1s ease;
+					  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+					  z-index: 100;
+					  text-align: center;
+					  text-transform: uppercase;
+					  display: flex;
+					  align-items: center;
+					  justify-content: center;
+					  height: fit-content;
+					}
+				  
+					.mutate-button:hover {
+					  background-color: #c2185b;
+					  transform: translateY(-2px);
+					  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+					}
+				  
+					.mutate-button:active {
+					  transform: translateY(0);
+					  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+					}
+				  
+					.tile {
+					  background-color: black;
+					  transition: background-color 0.3s ease;
+					  display: flex;
+					  justify-content: center;
+					  align-items: center;
+					  color: white;
+					  font-weight: bold;
+					}
+				  
+					.tile.white {
+					  background-color: white;
+					}
+				  
+					.tile.black {
+					  background-color: black;
+					}
+				  
+					.neighbor-count {
+					  font-size: 16px; /* Adjust size of the number */
+					  color: red;
+					}
+				  
+					.tile.red {
+					  background-color: red; /* Red color for painted tiles */
+					}
+					
+					/* Pattern name display */
+					/* Pattern info box container */
+					.pattern-info-box {
+					  text-align: center;
+					  margin-top: 10px;
+					  margin-bottom: 10px;
+					  margin-left: auto;
+					  margin-right: auto;
+					  padding: 15px;
+					  font-family: Arial, sans-serif;
+					  width: 100%;
+					  max-width: 100%;
+					  z-index: 10;
+					  background-color: rgba(0, 0, 0, 0.5);
+					  border-radius: 5px;
+					  box-sizing: border-box;
+					  display: flex;
+					  flex-direction: column;
+					  align-items: center;
+					  justify-content: center;
+					}
+					
+					.pattern-name {
+					  font-size: 24px;
+					  font-weight: bold;
+					  color: white;
+					  margin-bottom: 10px;
+					  padding: 0;
+					  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+					  background-color: transparent;
+					  width: 100%;
+					  text-align: center;
+					}
+					
+					.pattern-name a {
+					  color: white;
+					  text-decoration: underline;
+					  transition: color 0.3s ease;
+					}
+					
+					.pattern-name a:hover {
+					  color: #cccccc;
+					  text-decoration: underline;
+					}
+					
+					.pattern-description {
+					  font-size: 14px;
+					  color: white;
+					  margin-top: 8px;
+					  margin-bottom: 8px;
+					  padding: 0;
+					  font-family: Arial, sans-serif;
+					  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+					  background-color: transparent;
+					  width: 100%;
+					  text-align: center;
+					}
+					
+					.pattern-quote {
+					  font-size: 14px;
+					  color: white;
+					  margin-top: 8px;
+					  margin-bottom: 0;
+					  padding: 0;
+					  font-family: Arial, sans-serif;
+					  font-style: italic;
+					  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+					  background-color: transparent;
+					  width: 100%;
+					  text-align: center;
+					}
+					
+					.quote-text {
+					  flex: 1;
+					  text-align: right;
+					}
+					
+					.quote-attribution-container {
+					  display: flex;
+					  align-items: center;
+					  justify-content: flex-end;
+					  gap: 10px;
+					  margin-top: 8px;
+					}
+					
+					.quote-attribution {
+					  white-space: nowrap;
+					}
+					
+					.quote-separator {
+					  flex: 0 0 auto;
+					  width: 100px;
+					  margin: 0;
+					  border: none;
+					  border-top: 1px solid rgba(255, 255, 255, 0.6);
+					  background-color: transparent;
+					}
+				  </style>
+				  
+				
+
+
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul>
+							<li><a href="#intro" class="active">Description</a></li>
+							<li><a href="#call-for-papers">Call for papers</a></li>
+							<li><a href="#organizers">Organizers</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Introduction -->
+						<section id="intro" class="main">
+							<div class="spotlight">
+							  <div class="content">
+								<h2>Description</h2>
+								<p>Recent dramatic advances in the problem-solving capabilities and scale of Artificial Intelligence (AI) systems have enabled their successful application in challenging real-world scientific and engineering problems (Abramson et al 2024, Lam et al 2023). Yet these systems remain brittle to small disturbances and adversarial attacks (Su et al 2019, Cully 2014), lack human-level generalisation capabilities (Chollet 2019), and require alarming amounts of human, energy and financial resources (Strubel et al 2019). This rapid scaling has pushed AI research toward exploring how artificial systems can be made more autonomous, resilient, and creative, ultimately aiming at automated human-level scientific discovery (Georgiev et al 2025). In this evolving landscape, evolutionary algorithms have been integrated with foundation models (Novikov et al 2025, Lange et al 2025), where the former provide a grounded evaluation mechanism and the latter accelerate search and introduce creative mutations.</p>
+								
+								<p>Biological systems, on the other hand, seem to have largely solved many of these issues. They are capable of developing into complex organisms from a few cells and regenerating limbs through highly energy-efficient processes shaped by evolution. They do so through self-organisation: collectives of simple components interact locally with each other to give rise to macroscopic properties in the absence of centralised control (Camazine, 2001). This ability to self-organise renders organisms adaptive to their environments and robust to unexpected failures, as the redundancy built in the collective enables repurposing components, crucially, by leveraging the same self-organisation process that created the system in the first place. Thus, both evolution and self-organisation play an important role in creating and maintaining this impressive diversity of life.</p>
+								
+								<p>Self-organisation lies at the core of many computational systems that exhibit properties such as robustness, adaptability, scalability and open-ended dynamics. Some examples are Cellular Automata (Von Neumann 1966), and their more recent counterparts such as Neural Cellular Automata (Mordvintsev et al 2020) and Lenia (Chan, 2019), reaction-diffusion systems (Turing 1992, Mordvintsev 2021), and particle systems (Reynolds 1987, Mordvintsev). Examples from neuroevolution are indirect encodings of neural networks inspired from morphogenesis such as cellular encodings (Gruau 1992), HyperNEAT (Stanley et al 2009), Hypernetworks (Ha 2016), HyperNCA (Najarro et al 2022), Neural Developmental Programs (Najarro et al 2023, Nisioti et al 2024) and Hebbian learning, showing improved robustness and generalisation. Aside biological evolution, cultural evolution can also lead to open-ended systems, such as human culture, aspects of which have been captured by computational models of social dynamics, as with Schelling's model (Schelling, 1978), Spatial Social Dilemmas (Nowak and May, 1992) and, more recently, groups of Large Language Models (Nisioti el al, 2024).</p>
+								
+								<p>Guiding self-organising systems through evolution is a long-standing and promising practise, yet the inherent complexity of the dynamics of these systems complicates their scaling to domains where gradient-based methods or simpler models excel (Risi 2021). If we view self-organising systems as genotype to phenotype mappings, we can leverage techniques developed in the evolutionary optimization community to understand how they alter evolutionary dynamics and guide them better.</p>
+								
+								<p>This perspective is becoming increasingly important as evolutionary algorithms are now being employed at scale (Novikov et al 2025, Lange et al 2025, X. Qiu et al). A closer look at systems such as AlphaEvolve reveals their implicit evo-devo character, with program search reminiscent of prior work in genetic programming exploiting developmental encodings (Koza et al, 1994). However, little effort has been devoted to analysing them as genotype to phenotype mappings in terms of properties such as robustness, navigability, or developmental bias.</p>
+								
+								<h3>References</h3>
+								
+								<p>J. Abramson et al., "Accurate structure prediction of biomolecular interactions with AlphaFold 3," Nature, pp. 1–3, May 2024, doi: 10.1038/s41586-024-07487-w.</p>
+								
+								<p>J. R. Koza, Genetic programming II: automatic discovery of reusable programs. Cambridge, MA, USA: MIT Press, 1994.</p>
+								
+								<p>B. Georgiev, J. Gómez-Serrano, T. Tao, and A. Z. Wagner, "Mathematical exploration and discovery at scale," Nov. 06, 2025, arXiv: arXiv:2511.02864. doi: 10.48550/arXiv.2511.02864.</p>
+								
+								<p>A. Novikov et al., "AlphaEvolve: A coding agent for scientific and algorithmic discovery," June 17, 2025, arXiv: arXiv:2506.13131. doi: 10.48550/arXiv.2506.13131.</p>
+								
+								<p>X. Qiu et al., "Evolution Strategies at Scale: LLM Fine-Tuning Beyond Reinforcement Learning," Sept. 29, 2025, arXiv: arXiv:2509.24372. doi: 10.48550/arXiv.2509.24372.</p>
+								
+								<p>J. Su, D. V. Vargas, and S. Kouichi, "One pixel attack for fooling deep neural networks," IEEE Trans. Evol. Computat., vol. 23, no. 5, pp. 828–841, Oct. 2019, doi: 10.1109/TEVC.2019.2890858.</p>
+								
+								<p>R. Lam et al., "GraphCast: Learning skillful medium-range global weather forecasting," Aug. 04, 2023, arXiv: arXiv:2212.12794. Accessed: May 31, 2024. [Online]. Available: http://arxiv.org/abs/2212.12794</p>
+								
+								<p>R. T. Lange, Y. Imajuku, and E. Cetin, "ShinkaEvolve: Towards Open-Ended And Sample-Efficient Program Evolution," Sept. 17, 2025, arXiv: arXiv:2509.19349. doi: 10.48550/arXiv.2509.19349.</p>
+								
+								<p>A. Cully, J. Clune, D. Tarapore, and J.-B. Mouret, "Robots that can adapt like animals," Nature, vol. 521, no. 7553, pp. 503–507, May 2015, doi: 10.1038/nature14422.</p>
+								
+								<p>F. Chollet, "On the Measure of Intelligence," Nov. 25, 2019, arXiv: arXiv:1911.01547. doi: 10.48550/arXiv.1911.01547.</p>
+								
+								<p>E. Strubell, A. Ganesh, and A. McCallum, "Energy and Policy Considerations for Deep Learning in NLP," Jun. 05, 2019, arXiv: arXiv:1906.02243. doi: 10.48550/arXiv.1906.02243.</p>
+								
+								<p>S. Camazine, J.-L. Deneubourg, N. R. Franks, J. Sneyd, G. Theraulaz, and E. Bonabeau, Self-Organisation in Biological Systems, vol. 38. Princeton University Press, 2001. doi: 10.2307/j.ctvzxx9tx.</p>
+								
+								<p>A. Mordvintsev, E. Randazzo, and E. Niklasson, "Differentiable Programming of Reaction-Diffusion Patterns," Jun. 22, 2021, arXiv: arXiv:2107.06862. doi: 10.48550/arXiv.2107.06862.</p>
+								
+								<p>A. M. Turing, "The chemical basis of morphogenesis," Bltn Mathcal Biology, vol. 52, no. 1, pp. 153–197, Jan. 1990, doi: 10.1007/BF02459572.</p>
+								
+								<p>C. W. Reynolds, "Flocks, herds and schools: A distributed behavioral model," in Proceedings of the 14th annual conference on Computer graphics and interactive techniques, in SIGGRAPH '87. New York, NY, USA: Association for Computing Machinery, Aug. 1987, pp. 25–34. doi: 10.1145/37401.37406.</p>
+								
+								<p>Alexander Mordvintsev. Self-Organizing Particle Swarm. https://znah.net/icra23/</p>
+								
+								<p>B. W.-C. Chan, "Lenia - Biology of Artificial Life," ComplexSystems, vol. 28, no. 3, pp. 251–286, Oct. 2019, doi: 10.25088/ComplexSystems.28.3.251.</p>
+								
+								<p>B. A. y Arcas et al., "Computational Life: How Well-formed, Self-replicating Programs Emerge from Simple Interaction," Aug. 02, 2024, arXiv: arXiv:2406.19108. doi: 10.48550/arXiv.2406.19108.</p>
+								
+								<p>W. Fontana, "Algorithmic Chemistry: A model for functional self-organization."</p>
+								
+								<p>C. Adami and C. T. Brown, "Evolutionary Learning in the 2D Artificial Life System 'Avida,'" May 16, 1994, arXiv: arXiv:adap-org/9405003. doi: 10.48550/arXiv.adap-org/9405003.</p>
+								
+								<p>S. Rasmussen, C. Knudsen, R. Feldberg, and M. Hindsholm, "The coreworld: emergence and evolution of cooperative structures in a computational chemistry," in Emergent computation, Cambridge, MA, USA: MIT Press, 1991, pp. 111–134.</p>
+								
+								<p>E. Najarro, S. Sudhakaran, and S. Risi, "Towards Self-Assembling Artificial Neural Networks through Neural Developmental Programs," Jul. 16, 2023, arXiv: arXiv:2307.08197. Accessed: Oct. 03, 2023. [Online]. Available: http://arxiv.org/abs/2307.08197</p>
+								
+								<p>E. Nisioti, E. Plantec, M. Montero, J. Pedersen, and S. Risi, "Growing Artificial Neural Networks for Control: the Role of Neuronal Diversity," in Proceedings of the Genetic and Evolutionary Computation Conference Companion, Melbourne VIC Australia: ACM, Jul. 2024, pp. 175–178. doi: 10.1145/3638530.3654356.</p>
+								
+								<p>T. C. Schelling, "Micromotives and macrobehavior", 1st ed. New York: Norton, 1978.</p>
+								
+								<p>M. A. Nowak and R. M. May, "Evolutionary games and spatial chaos", Nature, vol. 359, no. 6398, pp. 826–829, Oct. 1992, doi: 10.1038/359826a0.</p>
+								
+								<p>E. Nisioti, S. Risi, I. Momennejad, P.-Y. Oudeyer, and C. Moulin-Frier, "Collective Innovation in Groups of Large Language Models",in ALIFE 2024: Proceedings of the 2024 Artificial Life Conference, MIT Press, 2024. Accessed: Feb. 06, 2025. [Online]. Available: https://direct.mit.edu/isal/proceedings-abstract/isal2024/36/123452</p>
+							  </div>
+							</div>
+
+							<style>
+								/* Center-align section headers */
+								.spotlight .content h2,
+								.spotlight .content h3,
+								header.major h2 {
+									text-align: center;
+									font-weight: bold;
+								}
+								
+								/* Style references - smaller font and no spacing */
+								.spotlight .content h3 ~ p {
+									font-size: 0.9em;
+									margin: 0;
+									padding: 0;
+								}
+
+					/* Style for the buttons */
+/* Style for the buttons */
+/* Style for the buttons */
+/* Style for the buttons */
+/* Style for the buttons */
+.button {
+	background-color: transparent !important; /* No background */
+	padding: 10px 20px; /* Button padding */
+	text-decoration: none; /* Remove underline */
+	border: none; /* Remove the border */
+	border-radius: 5px; /* Rounded corners */
+	display: inline-flex; /* Flexbox to align icon and text */
+	align-items: center; /* Vertically align the text and icon */
+	font-size: 16px; /* Font size */
+	font-weight: bold; /* Bold text */
+	gap: 10px; /* Space between icon and text */
+  }
+  
+  
+  /* Style for Twitter logo */
+  .twitter-button i {
+	font-size: 20px; /* Size for the Twitter icon */
+	color: #1DA1F2; /* Twitter blue color */
+  }
+  
+ 
+  
+  /* Style for Bluesky logo */
+  .blue-sky-button .logo {
+	width: 20px; /* Adjust size of the Bluesky logo to match Twitter logo */
+	height: 20px; /* Adjust size of the Bluesky logo to match Twitter logo */
+  }
+
+  /* Centering the buttons */
+  ul.actions {
+	display: flex;
+	justify-content: center; /* Center the buttons */
+	gap: 15px; /* Space between buttons */
+	padding: 0;
+	margin: 0;
+	list-style: none;
+  }
+  
+  ul.actions li {
+	display: inline-block;
+	text-align: center;
+	margin-top: 30px; /* Adjust as needed */
+
+  }
+  
+  
+  
+  
+  
+							  </style>
+							
+						  </section>
+						  
+						<!-- Call for papers -->
+						<section id="call-for-papers" class="main">
+							<div class="spotlight">
+							  <div class="content">
+								<h2>Call for papers</h2>
+								<p>We invite authors to submit papers through the Gecco submission system focused on the above subjects. We encourage two categories of submissions: papers of up to four pages showcasing early research ideas and papers up to 8 pages presenting more substantial contributions (such as technical contributions, benchmarks, negative results, surveys). Page count excludes references and appendices and submissions should follow the Gecco format. We encourage submissions related to evolution and self-organisation that address the following questions:</p>
+								
+								<ul>
+									<li>How can we evolve artificial systems that exhibit robustness, generalisation, and adaptability?</li>
+									<li>What properties are missing from current self-organising systems? Can we design new ones?</li>
+									<li>How can we analyse the trainability/navigability of self-organising systems?</li>
+									<li>How can evolutionary processes such as self-replication emerge in a self-organising system?</li>
+									<li>Which benchmarks/environments will reveal the benefit of self-organising systems?</li>
+									<li>Which scientific and engineering domains would benefit from the development of such systems?</li>
+								</ul>
+								
+							</div>
+						</div>
+												</section>
+						
+						<!-- Organizers -->
+						<section id="organizers" class="main special">
+							<header class="major">
+								<h2>Organizers</h2>
+							</header>
+
+							<ul class="organizers-list">
+								<li class="organizer-item">
+									<img src="images/people/eleni_nisioti.jpg" alt="Eleni Nisioti" class="organizer-img">
+									<strong>Eleni Nisioti</strong>
+									<p class="organizer-affiliation">IT University of Copenhagen</p>
+								</li>
+								<li class="organizer-item">
+									<img src="images/people/alex_mordvintsev.png" alt="Alex Mordvintsev" class="organizer-img">
+									<strong>Alex Mordvintsev</strong>
+									<p class="organizer-affiliation">Google Research, Zurich</p>
+								</li>
+								<li class="organizer-item">
+									<img src="images/people/ettore_randazzo.jpg" alt="Ettore Randazzo" class="organizer-img">
+									<strong>Ettore Randazzo</strong>
+									<p class="organizer-affiliation">Google Research, Zurich</p>
+								</li>
+								<li class="organizer-item">
+									<img src="images/people/eyvind_niklasson.jpg" alt="Eyvind Niklasson" class="organizer-img">
+									<strong>Eyvind Niklasson</strong>
+									<p class="organizer-affiliation">Google Research, Zurich</p>
+								</li>								
+								<li class="organizer-item">
+									<img src="images/people/marcello_barylli.png" alt="Marcello Barylli" class="organizer-img">
+									<strong>Marcello Barylli</strong>
+									<p class="organizer-affiliation">IT University of Copenhagen</p>
+								</li>				
+								<li class="organizer-item">
+									<img src="images/people/sebastian_risi.jpg" alt="Sebastian Risi" class="organizer-img">
+									<strong>Sebastian Risi</strong>
+									<p class="organizer-affiliation">IT University of Copenhagen</p>
+								</li>
+								<li class="organizer-item">
+									<img src="images/people/milton_montero.jpeg" alt="Milton Montero" class="organizer-img">
+									<strong>Milton Montero</strong>
+									<p class="organizer-affiliation">IT University of Copenhagen</p>
+								</li>
+								<li class="organizer-item">
+									<img src="images/people/mayalen_etcheverry.jpg" alt="Mayalen Etcheverry" class="organizer-img">
+									<strong>Mayalen Etcheverry</strong>
+									<p class="organizer-affiliation">IT University of Copenhagen</p>
+								</li>
+							</ul>
+
+							<style>
+								.organizers-list {
+									display: flex;
+									justify-content: center;
+									list-style: none;
+									padding: 0;
+									flex-wrap: wrap;
+									gap: 20px;
+								}
+								
+								.organizer-item {
+									text-align: center;
+									padding: 15px;
+									flex: 0 1 calc(25% - 20px);
+									min-width: 150px;
+									max-width: 200px;
+								}
+								
+								.organizer-img {
+									display: block;
+									margin: 0 auto 10px;
+									width: 150px;
+									height: 150px;
+									object-fit: cover;
+									border-radius: 50%;
+								}
+								
+								.organizer-item strong {
+									display: block;
+									font-size: 18px;
+									margin-top: 10px;
+								}
+								
+								.organizer-affiliation {
+									display: block;
+									font-size: 14px;
+									margin-top: 5px;
+									color: #666;
+									font-style: italic;
+								}
+																					</style>
+							</section>
+
+					</div>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
