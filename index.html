@@ -21,19 +21,21 @@
 			<div id="wrapper">
 
 				<header id="header" class="tile-header">
-					<!-- Top bar with logo and mutate button -->
+					<!-- Top bar with logo and GECCO info -->
 					<div class="top-bar">
 						<div class="logo-container">
 							<div id="logo-text" class="logo-text-container"></div>
 							<img src="images/gecco_logo.png" alt="GECCO" class="gecco-logo">
 						</div>
-						<button id="mutateButton" class="mutate-button">Mutate</button>
 						<div class="gecco-info">
-							<div class="gecco-info-title">GECCO 2026 @ San José, Costa Rica</div>
-							<div class="gecco-info-subtitle">The Genetic and Evolutionary Computation Conference</div>
+							<div class="gecco-info-title">Evolving Self-Organisation Workshop</div>
+							<div class="gecco-info-subtitle">@ GECCO 2026, San José, Costa Rica</div>
 							<div class="gecco-info-date">July 13 - 17, 2026</div>
 						</div>
 					</div>
+					
+					<!-- Mutate button centered above grid -->
+					<button id="mutateButton" class="mutate-button">Mutate</button>
 					
 					<!-- Grid and button container -->
 					<div class="grid-container">
@@ -751,6 +753,8 @@
 					  margin-left: auto;
 					  margin-right: auto;
 					  padding: 0;
+					  position: relative;
+					  overflow: hidden;
 					}
 				  
 					/* Grid container styling */
@@ -768,8 +772,10 @@
 				  
 					/* Mutate button styling */
 					.mutate-button {
-					  padding: clamp(4px, 1vw, 8px) clamp(8px, 2vw, 16px);
+					  padding: clamp(4px, 0.8vw, 8px) clamp(8px, 1.5vw, 16px);
 					  font-size: clamp(10px, 1.5vw, 14px);
+					  align-self: center;
+					  margin: clamp(2px, 0.3vw, 4px) 0;
 					  flex-shrink: 0;
 					  font-weight: bold;
 					  color: white;
@@ -830,11 +836,11 @@
 					/* Pattern info box container */
 					.pattern-info-box {
 					  text-align: center;
-					  margin-top: 10px;
-					  margin-bottom: 10px;
+					  margin-top: clamp(6px, 1.5vw, 12px);
+					  margin-bottom: 0;
 					  margin-left: auto;
 					  margin-right: auto;
-					  padding: clamp(8px, 2vw, 15px);
+					  padding: clamp(4px, 1vw, 10px);
 					  font-family: Arial, sans-serif;
 					  width: 100%;
 					  max-width: 100%;
@@ -846,7 +852,7 @@
 					  flex-direction: column;
 					  align-items: center;
 					  justify-content: center;
-					  flex-shrink: 0;
+					  flex-shrink: 1;
 					}
 					
 					.pattern-name {
@@ -935,8 +941,11 @@
 						<ul>
 							<li><a href="#intro" class="active">Description</a></li>
 							<li><a href="#call-for-papers">Call for papers</a></li>
+							<li><a href="#speakers">Speakers</a></li>
+							<li><a href="#schedule">Schedule</a></li>
 							<li><a href="#organizers">Organizers</a></li>
 							<li><a href="#past-workshops">Past workshops</a></li>
+							<li><a href="#contact">Contact</a></li>
 						</ul>
 					</nav>
 
@@ -948,84 +957,31 @@
 							<div class="spotlight">
 							  <div class="content">
 								<h2>Description</h2>
-								<p>Recent dramatic advances in the problem-solving capabilities and scale of Artificial Intelligence (AI) systems have enabled their successful application in challenging real-world scientific and engineering problems (Abramson et al 2024, Lam et al 2023). Yet these systems remain brittle to small disturbances and adversarial attacks (Su et al 2019, Cully 2014), lack human-level generalisation capabilities (Chollet 2019), and require alarming amounts of human, energy and financial resources (Strubel et al 2019). This rapid scaling has pushed AI research toward exploring how artificial systems can be made more autonomous, resilient, and creative, ultimately aiming at automated human-level scientific discovery (Georgiev et al 2025). In this evolving landscape, evolutionary algorithms have been integrated with foundation models (Novikov et al 2025, Lange et al 2025), where the former provide a grounded evaluation mechanism and the latter accelerate search and introduce creative mutations.</p>
+								<p>Recent dramatic advances in the problem-solving capabilities and scale of Artificial Intelligence (AI) systems have enabled their successful application in challenging real-world scientific and engineering problems <span class="cite">(Abramson et al 2024, Lam et al 2023)</span>. Yet these systems remain brittle to small disturbances and adversarial attacks <span class="cite">(Su et al 2019, Cully 2014)</span>, lack human-level generalisation capabilities <span class="cite">(Chollet 2019)</span>, and require alarming amounts of human, energy and financial resources <span class="cite">(Strubel et al 2019)</span>.</p>
 								
-								<p>Biological systems, on the other hand, seem to have largely solved many of these issues. They are capable of developing into complex organisms from a few cells and regenerating limbs through highly energy-efficient processes shaped by evolution. They do so through self-organisation: collectives of simple components interact locally with each other to give rise to macroscopic properties in the absence of centralised control (Camazine, 2001). This ability to self-organise renders organisms adaptive to their environments and robust to unexpected failures, as the redundancy built in the collective enables repurposing components, crucially, by leveraging the same self-organisation process that created the system in the first place. Thus, both evolution and self-organisation play an important role in creating and maintaining this impressive diversity of life.</p>
+								<p>Biological systems, on the other hand, seem to have largely solved many of these issues. They are capable of developing into complex organisms from a few cells and regenerating limbs through highly energy-efficient processes shaped by evolution. They do so through self-organisation: collectives of simple components interact locally with each other to give rise to macroscopic properties in the absence of centralised control <span class="cite">(Camazine, 2001)</span>. This ability to self-organise renders organisms adaptive to their environments and robust to unexpected failures, as the redundancy built in the collective enables repurposing components, crucially, by leveraging the same self-organisation process that created the system in the first place.</p>
 								
-								<p>Self-organisation lies at the core of many computational systems that exhibit properties such as robustness, adaptability, scalability and open-ended dynamics. Some examples are Cellular Automata (Von Neumann 1966), and their more recent counterparts such as Neural Cellular Automata (Mordvintsev et al 2020) and Lenia (Chan, 2019), reaction-diffusion systems (Turing 1992, Mordvintsev 2021), and particle systems (Reynolds 1987, Mordvintsev). Examples from neuroevolution are indirect encodings of neural networks inspired from morphogenesis such as cellular encodings (Gruau 1992), HyperNEAT (Stanley et al 2009), Hypernetworks (Ha 2016), HyperNCA (Najarro et al 2022), Neural Developmental Programs (Najarro et al 2023, Nisioti et al 2024) and Hebbian learning, showing improved robustness and generalisation. Aside biological evolution, cultural evolution can also lead to open-ended systems, such as human culture, aspects of which have been captured by computational models of social dynamics, as with Schelling's model (Schelling, 1978), Spatial Social Dilemmas (Nowak and May, 1992) and, more recently, groups of Large Language Models (Nisioti el al, 2024).</p>
+								<p>Classical examples of self-oragnising systems are Cellular Automata <span class="cite">(Von Neumann 1966)</span>, and their more recent counterparts Neural Cellular Automata <span class="cite">(Mordvintsev et al 2020)</span> and Lenia <span class="cite">(Chan, 2019)</span>, reaction-diffusion systems <span class="cite">(Turing 1992, Mordvintsev 2021)</span> and particle systems <span class="cite">(Reynolds 1987, Mordvintsev)</span>. Examples of self-organising systems for neural network optimisation are indirect genotype to phenotype mappings such as cellular encodings <span class="cite">(Gruau 1992)</span>, Hypernetworks <span class="cite">(Ha 2016)</span>, HyperNCA <span class="cite">(Najarro et al 2022)</span>, Neural Developmental Programs <span class="cite">(Najarro et al 2023, Nisioti et al 2024)</span> and Hebbian learning. Self-organising systems are also relevant for the study of social dynamics, as with Schelling's model <span class="cite">(Schelling, 1978)</span>, Spatial Social Dilemmas <span class="cite">(Nowak and May, 1992)</span> and, more recently, groups of Large Language Models <span class="cite">(Nisioti el al, 2024)</span>.</p>
 								
-								<p>Guiding self-organising systems through evolution is a long-standing and promising practise, yet the inherent complexity of the dynamics of these systems complicates their scaling to domains where gradient-based methods or simpler models excel (Risi 2021). If we view self-organising systems as genotype to phenotype mappings, we can leverage techniques developed in the evolutionary optimization community to understand how they alter evolutionary dynamics and guide them better.</p>
-																
-								<h3>References</h3>
-								
-								<p>J. Abramson et al., "Accurate structure prediction of biomolecular interactions with AlphaFold 3," Nature, pp. 1–3, May 2024, doi: 10.1038/s41586-024-07487-w.</p>
-								
-								<p>J. R. Koza, Genetic programming II: automatic discovery of reusable programs. Cambridge, MA, USA: MIT Press, 1994.</p>
-								
-								<p>B. Georgiev, J. Gómez-Serrano, T. Tao, and A. Z. Wagner, "Mathematical exploration and discovery at scale," Nov. 06, 2025, arXiv: arXiv:2511.02864. doi: 10.48550/arXiv.2511.02864.</p>
-								
-								<p>A. Novikov et al., "AlphaEvolve: A coding agent for scientific and algorithmic discovery," June 17, 2025, arXiv: arXiv:2506.13131. doi: 10.48550/arXiv.2506.13131.</p>
-								
-								<p>X. Qiu et al., "Evolution Strategies at Scale: LLM Fine-Tuning Beyond Reinforcement Learning," Sept. 29, 2025, arXiv: arXiv:2509.24372. doi: 10.48550/arXiv.2509.24372.</p>
-								
-								<p>J. Su, D. V. Vargas, and S. Kouichi, "One pixel attack for fooling deep neural networks," IEEE Trans. Evol. Computat., vol. 23, no. 5, pp. 828–841, Oct. 2019, doi: 10.1109/TEVC.2019.2890858.</p>
-								
-								<p>R. Lam et al., "GraphCast: Learning skillful medium-range global weather forecasting," Aug. 04, 2023, arXiv: arXiv:2212.12794. Accessed: May 31, 2024. [Online]. Available: http://arxiv.org/abs/2212.12794</p>
-								
-								<p>R. T. Lange, Y. Imajuku, and E. Cetin, "ShinkaEvolve: Towards Open-Ended And Sample-Efficient Program Evolution," Sept. 17, 2025, arXiv: arXiv:2509.19349. doi: 10.48550/arXiv.2509.19349.</p>
-								
-								<p>A. Cully, J. Clune, D. Tarapore, and J.-B. Mouret, "Robots that can adapt like animals," Nature, vol. 521, no. 7553, pp. 503–507, May 2015, doi: 10.1038/nature14422.</p>
-								
-								<p>F. Chollet, "On the Measure of Intelligence," Nov. 25, 2019, arXiv: arXiv:1911.01547. doi: 10.48550/arXiv.1911.01547.</p>
-								
-								<p>E. Strubell, A. Ganesh, and A. McCallum, "Energy and Policy Considerations for Deep Learning in NLP," Jun. 05, 2019, arXiv: arXiv:1906.02243. doi: 10.48550/arXiv.1906.02243.</p>
-								
-								<p>S. Camazine, J.-L. Deneubourg, N. R. Franks, J. Sneyd, G. Theraulaz, and E. Bonabeau, Self-Organisation in Biological Systems, vol. 38. Princeton University Press, 2001. doi: 10.2307/j.ctvzxx9tx.</p>
-								
-								<p>A. Mordvintsev, E. Randazzo, and E. Niklasson, "Differentiable Programming of Reaction-Diffusion Patterns," Jun. 22, 2021, arXiv: arXiv:2107.06862. doi: 10.48550/arXiv.2107.06862.</p>
-								
-								<p>A. M. Turing, "The chemical basis of morphogenesis," Bltn Mathcal Biology, vol. 52, no. 1, pp. 153–197, Jan. 1990, doi: 10.1007/BF02459572.</p>
-								
-								<p>C. W. Reynolds, "Flocks, herds and schools: A distributed behavioral model," in Proceedings of the 14th annual conference on Computer graphics and interactive techniques, in SIGGRAPH '87. New York, NY, USA: Association for Computing Machinery, Aug. 1987, pp. 25–34. doi: 10.1145/37401.37406.</p>
-								
-								<p>Alexander Mordvintsev. Self-Organizing Particle Swarm. https://znah.net/icra23/</p>
-								
-								<p>B. W.-C. Chan, "Lenia - Biology of Artificial Life," ComplexSystems, vol. 28, no. 3, pp. 251–286, Oct. 2019, doi: 10.25088/ComplexSystems.28.3.251.</p>
-								
-								<p>B. A. y Arcas et al., "Computational Life: How Well-formed, Self-replicating Programs Emerge from Simple Interaction," Aug. 02, 2024, arXiv: arXiv:2406.19108. doi: 10.48550/arXiv.2406.19108.</p>
-								
-								<p>W. Fontana, "Algorithmic Chemistry: A model for functional self-organization."</p>
-								
-								<p>C. Adami and C. T. Brown, "Evolutionary Learning in the 2D Artificial Life System 'Avida,'" May 16, 1994, arXiv: arXiv:adap-org/9405003. doi: 10.48550/arXiv.adap-org/9405003.</p>
-								
-								<p>S. Rasmussen, C. Knudsen, R. Feldberg, and M. Hindsholm, "The coreworld: emergence and evolution of cooperative structures in a computational chemistry," in Emergent computation, Cambridge, MA, USA: MIT Press, 1991, pp. 111–134.</p>
-								
-								<p>E. Najarro, S. Sudhakaran, and S. Risi, "Towards Self-Assembling Artificial Neural Networks through Neural Developmental Programs," Jul. 16, 2023, arXiv: arXiv:2307.08197. Accessed: Oct. 03, 2023. [Online]. Available: http://arxiv.org/abs/2307.08197</p>
-								
-								<p>E. Nisioti, E. Plantec, M. Montero, J. Pedersen, and S. Risi, "Growing Artificial Neural Networks for Control: the Role of Neuronal Diversity," in Proceedings of the Genetic and Evolutionary Computation Conference Companion, Melbourne VIC Australia: ACM, Jul. 2024, pp. 175–178. doi: 10.1145/3638530.3654356.</p>
-								
-								<p>T. C. Schelling, "Micromotives and macrobehavior", 1st ed. New York: Norton, 1978.</p>
-								
-								<p>M. A. Nowak and R. M. May, "Evolutionary games and spatial chaos", Nature, vol. 359, no. 6398, pp. 826–829, Oct. 1992, doi: 10.1038/359826a0.</p>
-								
-								<p>E. Nisioti, S. Risi, I. Momennejad, P.-Y. Oudeyer, and C. Moulin-Frier, "Collective Innovation in Groups of Large Language Models",in ALIFE 2024: Proceedings of the 2024 Artificial Life Conference, MIT Press, 2024. Accessed: Feb. 06, 2025. [Online]. Available: https://direct.mit.edu/isal/proceedings-abstract/isal2024/36/123452</p>
-							  </div>
+<p>The adaptive, autonomous, and complex nature of self-organising systems presents significant challenges for optimisation <span class="cite">(Risi 2021, Mitchell et al. 1996)</span>. Yet this same complexity is hypothesised to hold the key to scaling up evolutionary optimisation — development can reduce the effective parameter space and shape the fitness landscape enabling sample-efficient search in high-dimensional landscapes <span class="cite">(Kauffman and Levin 1987)</span>.</p>																								
+
+<p>Our workshop aims to bring together experts in evolutionary optimisation and self-organising systems to discuss how the field has evolved over recent decades, and how the latest developments can drive advances in self-organising systems and their applications across science and engineering.</p>
+
+</div>
 							</div>
 
 							<style>
+								/* Pale citations */
+								.cite {
+									opacity: 0.5;
+								}
+
 								/* Center-align section headers */
 								.spotlight .content h2,
 								.spotlight .content h3,
 								header.major h2 {
 									text-align: center;
 									font-weight: bold;
-								}
-								
-								/* Style references - smaller font and no spacing */
-								.spotlight .content h3 ~ p {
-									font-size: 0.9em;
-									margin: 0;
-									padding: 0;
 								}
 
 					/* Style for the buttons */
@@ -1092,20 +1048,37 @@
 							  <div class="content">
 								<h2>Call for papers</h2>
 								<p>We invite authors to submit papers through the <a href="https://ssl.linklings.net/conferences/gecco/" target="_blank">GECCO submission system</a>. We encourage two categories of submissions: papers of up to four pages showcasing early research ideas and papers up to 8 pages presenting more substantial contributions (such as technical contributions, benchmarks, negative results, surveys). Page count excludes references and appendices and submissions should follow the Gecco format. We encourage submissions related to evolution and self-organisation that address the following questions:</p>
+								<p><strong>What are the challenges of optimising self-organising systems?</strong>  Early studies of cellular automata employed primarily genetic programming for their optimisation <span class="cite">(Mitchell 1994, 1996)</span>. Numerous works have identified challenges in such set-ups: self-organising systems are characterised by a need for symmetry breaking <span class="cite">(Mitchell 1996)</span> and fitness landscapes with local optima <span class="cite">(Kauffman 1987, Greenbury 2022)</span>. Today the dominant training paradigm for Neural CA is gradient-based optimisation <span class="cite">(Mordvintsev)</span>. Although more powerful, it has been recently shown to be out-competed by modern neuro-evolution approaches in the presence of local optima <span class="cite">(Such 2024)</span>, noisy feedback <span class="cite">(Salimans et al 2017)</span> and non-stationarity <span class="cite">(Nisioti 2025)</span>. We welcome empirical and theoretical studies showcasing challenges and benefits of different optimisation approaches for self-organising systems. </p>
+
 								
-								<ul>
-									<li>How can we evolve artificial systems that exhibit robustness, generalisation, and adaptability?</li>
-									<li>What properties are missing from current self-organising systems? Can we design new ones?</li>
-									<li>How can we analyse the trainability/navigability of self-organising systems?</li>
-									<li>How can evolutionary processes such as self-replication emerge in a self-organising system?</li>
-									<li>Which benchmarks/environments will reveal the benefit of self-organising systems?</li>
-									<li>Which scientific and engineering domains would benefit from the development of such systems?</li>
-								</ul>
+								<p><strong>Why do we need artificial self-organising systems?</strong> From an AI perspective, such systems offer advantages often missing in today’s approaches, including robustness, scalability, parameter efficiency, and improved generalisation. From an application standpoint, they can model natural systems more effectively than black-box methods—for example, in synthetic biology. We welcome studies exploring known or novel benefits, limitations and links to applications.</p>
+								<p><strong>How can we analyse the trainability of self-organising systems?</strong> Theoretical and empirical work on fitness loss landscapes and random boolean networks has shed insights into the challenges of training self-organising systems <span class="cite">(Kauffman and Levin 1987, Greenbury et al 2022)</span>. The evolutionary optimisation community has laid great focus on developping tools for analysing fitness landscapes and understanding the effect of the genotype to phenotype mapping <span class="cite">(Thomson et al 2024)</span>. How can we apply and extend such approaches to self-organisng systems??</p>
+
 								
 							</div>
 						</div>
 												</section>
 						
+						<!-- Speakers -->
+						<section id="speakers" class="main">
+							<div class="spotlight">
+							  <div class="content">
+								<h2>Speakers</h2>
+								<p>TBA</p>
+							  </div>
+							</div>
+						</section>
+
+						<!-- Schedule -->
+						<section id="schedule" class="main">
+							<div class="spotlight">
+							  <div class="content">
+								<h2>Schedule</h2>
+								<p>TBA</p>
+							  </div>
+							</div>
+						</section>
+
 						<!-- Organizers -->
 						<section id="organizers" class="main special">
 							<header class="major">
@@ -1210,9 +1183,69 @@
 							</div>
 						</section>
 
-					</div>
+						<!-- References -->
+						<section id="references" class="main">
+							<div class="spotlight">
+							  <div class="content">
+								<h2>References</h2>
+								<div class="references-list">
+								<p>J. Abramson et al., "Accurate structure prediction of biomolecular interactions with AlphaFold 3," Nature, pp. 1–3, May 2024, doi: 10.1038/s41586-024-07487-w.</p>
+								<p>J. R. Koza, Genetic programming II: automatic discovery of reusable programs. Cambridge, MA, USA: MIT Press, 1994.</p>
+								<p>B. Georgiev, J. Gómez-Serrano, T. Tao, and A. Z. Wagner, "Mathematical exploration and discovery at scale," Nov. 06, 2025, arXiv: arXiv:2511.02864. doi: 10.48550/arXiv.2511.02864.</p>
+								<p>A. Novikov et al., "AlphaEvolve: A coding agent for scientific and algorithmic discovery," June 17, 2025, arXiv: arXiv:2506.13131. doi: 10.48550/arXiv.2506.13131.</p>
+								<p>X. Qiu et al., "Evolution Strategies at Scale: LLM Fine-Tuning Beyond Reinforcement Learning," Sept. 29, 2025, arXiv: arXiv:2509.24372. doi: 10.48550/arXiv.2509.24372.</p>
+								<p>J. Su, D. V. Vargas, and S. Kouichi, "One pixel attack for fooling deep neural networks," IEEE Trans. Evol. Computat., vol. 23, no. 5, pp. 828–841, Oct. 2019, doi: 10.1109/TEVC.2019.2890858.</p>
+								<p>R. Lam et al., "GraphCast: Learning skillful medium-range global weather forecasting," Aug. 04, 2023, arXiv: arXiv:2212.12794. Accessed: May 31, 2024. [Online]. Available: http://arxiv.org/abs/2212.12794</p>
+								<p>R. T. Lange, Y. Imajuku, and E. Cetin, "ShinkaEvolve: Towards Open-Ended And Sample-Efficient Program Evolution," Sept. 17, 2025, arXiv: arXiv:2509.19349. doi: 10.48550/arXiv.2509.19349.</p>
+								<p>A. Cully, J. Clune, D. Tarapore, and J.-B. Mouret, "Robots that can adapt like animals," Nature, vol. 521, no. 7553, pp. 503–507, May 2015, doi: 10.1038/nature14422.</p>
+								<p>F. Chollet, "On the Measure of Intelligence," Nov. 25, 2019, arXiv: arXiv:1911.01547. doi: 10.48550/arXiv.1911.01547.</p>
+								<p>E. Strubell, A. Ganesh, and A. McCallum, "Energy and Policy Considerations for Deep Learning in NLP," Jun. 05, 2019, arXiv: arXiv:1906.02243. doi: 10.48550/arXiv.1906.02243.</p>
+								<p>S. Camazine, J.-L. Deneubourg, N. R. Franks, J. Sneyd, G. Theraulaz, and E. Bonabeau, Self-Organisation in Biological Systems, vol. 38. Princeton University Press, 2001. doi: 10.2307/j.ctvzxx9tx.</p>
+								<p>A. Mordvintsev, E. Randazzo, and E. Niklasson, "Differentiable Programming of Reaction-Diffusion Patterns," Jun. 22, 2021, arXiv: arXiv:2107.06862. doi: 10.48550/arXiv.2107.06862.</p>
+								<p>A. M. Turing, "The chemical basis of morphogenesis," Bltn Mathcal Biology, vol. 52, no. 1, pp. 153–197, Jan. 1990, doi: 10.1007/BF02459572.</p>
+								<p>C. W. Reynolds, "Flocks, herds and schools: A distributed behavioral model," in Proceedings of the 14th annual conference on Computer graphics and interactive techniques, in SIGGRAPH '87. New York, NY, USA: Association for Computing Machinery, Aug. 1987, pp. 25–34. doi: 10.1145/37401.37406.</p>
+								<p>Alexander Mordvintsev. Self-Organizing Particle Swarm. https://znah.net/icra23/</p>
+								<p>B. W.-C. Chan, "Lenia - Biology of Artificial Life," ComplexSystems, vol. 28, no. 3, pp. 251–286, Oct. 2019, doi: 10.25088/ComplexSystems.28.3.251.</p>
+								<p>B. A. y Arcas et al., "Computational Life: How Well-formed, Self-replicating Programs Emerge from Simple Interaction," Aug. 02, 2024, arXiv: arXiv:2406.19108. doi: 10.48550/arXiv.2406.19108.</p>
+								<p>W. Fontana, "Algorithmic Chemistry: A model for functional self-organization."</p>
+								<p>C. Adami and C. T. Brown, "Evolutionary Learning in the 2D Artificial Life System 'Avida,'" May 16, 1994, arXiv: arXiv:adap-org/9405003. doi: 10.48550/arXiv.adap-org/9405003.</p>
+								<p>S. Rasmussen, C. Knudsen, R. Feldberg, and M. Hindsholm, "The coreworld: emergence and evolution of cooperative structures in a computational chemistry," in Emergent computation, Cambridge, MA, USA: MIT Press, 1991, pp. 111–134.</p>
+								<p>E. Najarro, S. Sudhakaran, and S. Risi, "Towards Self-Assembling Artificial Neural Networks through Neural Developmental Programs," Jul. 16, 2023, arXiv: arXiv:2307.08197. Accessed: Oct. 03, 2023. [Online]. Available: http://arxiv.org/abs/2307.08197</p>
+								<p>E. Nisioti, E. Plantec, M. Montero, J. Pedersen, and S. Risi, "Growing Artificial Neural Networks for Control: the Role of Neuronal Diversity," in Proceedings of the Genetic and Evolutionary Computation Conference Companion, Melbourne VIC Australia: ACM, Jul. 2024, pp. 175–178. doi: 10.1145/3638530.3654356.</p>
+								<p>T. C. Schelling, "Micromotives and macrobehavior", 1st ed. New York: Norton, 1978.</p>
+								<p>M. A. Nowak and R. M. May, "Evolutionary games and spatial chaos", Nature, vol. 359, no. 6398, pp. 826–829, Oct. 1992, doi: 10.1038/359826a0.</p>
+								<p>E. Nisioti, S. Risi, I. Momennejad, P.-Y. Oudeyer, and C. Moulin-Frier, "Collective Innovation in Groups of Large Language Models", in ALIFE 2024: Proceedings of the 2024 Artificial Life Conference, MIT Press, 2024. Accessed: Feb. 06, 2025. [Online]. Available: https://direct.mit.edu/isal/proceedings-abstract/isal2024/36/123452</p>
+								<p>M. Mitchell, J. P. Crutchfield, and R. Das, "Evolving cellular automata with genetic algorithms: A review of recent work," in Proceedings of the First International Conference on Evolutionary Computation and Its Applications (EvCA'96), 1996.</p>
+								<p>M. Mitchell, J. P. Crutchfield, and P. T. Hraber, "Evolving cellular automata to perform computations: Mechanisms and impediments," Physica D, vol. 75, pp. 361–391, 1994.</p>
+								<p>S. Kauffman and S. Levin, "Towards a general theory of adaptive walks on rugged landscapes," Journal of Theoretical Biology, vol. 128, no. 1, pp. 11–45, 1987.</p>
+								<p>S. F. Greenbury, A. A. Louis, and S. E. Ahnert, "The structure of genotype-phenotype maps makes fitness landscapes navigable," Nature Ecology & Evolution, vol. 6, pp. 1–11, 2022.</p>
+								<p>F. P. Such, V. Madhavan, E. Conti, J. Lehman, K. O. Stanley, and J. Clune, "Deep Neuroevolution: Genetic Algorithms Are a Competitive Alternative for Training Deep Neural Networks for Reinforcement Learning," Dec. 2017, arXiv: arXiv:1712.06567.</p>
+								<p>T. Salimans, J. Ho, X. Chen, S. Sidor, and I. Sutskever, "Evolution Strategies as a Scalable Alternative to Reinforcement Learning," Sept. 2017, arXiv: arXiv:1703.03864.</p>
+								<p>E. Nisioti, M. Khajehnejad, M. Borg, and S. Dahl, "When Does Neuroevolution Outcompete Reinforcement Learning?," Apr. 2025, arXiv: arXiv:2504.16779.</p>
+								<p>S. L. Thomson, L. Le Goff, E. Hart, and E. Buchanan, "Understanding Fitness Landscapes in Morpho-Evolution via Local Optima Networks," in Proceedings of the Genetic and Evolutionary Computation Conference, Melbourne VIC Australia: ACM, Jul. 2024, pp. 114–123. doi: 10.1145/3638529.3654059.</p>
+								</div>
+							  </div>
+							</div>
+							<style>
+								.references-list p {
+									font-size: 0.85em;
+									margin: 0;
+									padding: 2px 0;
+									line-height: 1.4;
+								}
+							</style>
+						</section>
 
-			</div>
+					<!-- Contact -->
+					<section id="contact" class="main">
+						<div class="spotlight">
+						  <div class="content">
+							<h2>Contact</h2>
+							<p>For questions or further information, please contact us at <a href="mailto:enis@itu.dk">enis@itu.dk</a></p>
+						  </div>
+						</div>
+					</section>
+
 
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
