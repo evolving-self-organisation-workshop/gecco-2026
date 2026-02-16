@@ -111,21 +111,74 @@
 					  ]
 					};
 
+					// Compact pixel font (3x5 grid) for small screens
+					const pixelFontSmall = {
+					  'E': [
+						[1,1,1],
+						[1,0,0],
+						[1,1,0],
+						[1,0,0],
+						[1,1,1]
+					  ],
+					  'V': [
+						[1,0,1],
+						[1,0,1],
+						[1,0,1],
+						[1,0,1],
+						[0,1,0]
+					  ],
+					  'O': [
+						[1,1,1],
+						[1,0,1],
+						[1,0,1],
+						[1,0,1],
+						[1,1,1]
+					  ],
+					  'S': [
+						[1,1,1],
+						[1,0,0],
+						[1,1,1],
+						[0,0,1],
+						[1,1,1]
+					  ],
+					  'L': [
+						[1,0,0],
+						[1,0,0],
+						[1,0,0],
+						[1,0,0],
+						[1,1,1]
+					  ],
+					  'F': [
+						[1,1,1],
+						[1,0,0],
+						[1,1,0],
+						[1,0,0],
+						[1,0,0]
+					  ]
+					};
+
+					// Choose font based on screen width
+					function getPixelFont() {
+					  return window.innerWidth <= 768 ? pixelFontSmall : pixelFont;
+					}
+
 					// Function to create tile-based letter
 					function createLetterTile(letter, isWhite) {
 					  const letterContainer = document.createElement('div');
 					  letterContainer.className = 'letter-container';
 					  
-					  const pattern = pixelFont[letter];
+					  const font = getPixelFont();
+					  const pattern = font[letter];
 					  if (!pattern) return letterContainer;
 					  
 					  const rows = pattern.length;
 					  const cols = pattern[0].length;
 					  
 					  letterContainer.style.display = 'grid';
-					  letterContainer.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-					  letterContainer.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
-					  letterContainer.style.gap = '3px';
+					  letterContainer.style.gridTemplateColumns = `repeat(${cols}, auto)`;
+					  letterContainer.style.gridTemplateRows = `repeat(${rows}, auto)`;
+					  letterContainer.style.width = 'fit-content';
+					  letterContainer.style.height = 'fit-content';
 					  
 					  for (let row = 0; row < rows; row++) {
 						for (let col = 0; col < cols; col++) {
@@ -171,6 +224,11 @@
 					// Create logo on page load
 					document.addEventListener("DOMContentLoaded", function() {
 					  createLogoText();
+					  let resizeTimer;
+					  window.addEventListener('resize', function() {
+					    clearTimeout(resizeTimer);
+					    resizeTimer = setTimeout(createLogoText, 150);
+					  });
 					});
 
 					document.addEventListener("DOMContentLoaded", function() {
@@ -629,15 +687,22 @@
 					  flex-direction: column; /* Align image and grid vertically */
 					  justify-content: flex-start;
 					  align-items: center;
-					  height: 100vh; /* Full viewport height */
+					  min-height: 100vh; /* Full viewport height on desktop */
 					  width: 100%;
 					  position: relative;
+					}
+					
+					@media (max-width: 768px) {
+					  .tile-header {
+					    min-height: auto;
+					    height: auto;
+					  }
 					}
 					
 					/* Top bar row: logo + mutate button */
 					.top-bar {
 					  display: flex;
-					  align-items: center;
+					  align-items: flex-start;
 					  justify-content: space-between;
 					  width: 100%;
 					  padding: clamp(4px, 1vw, 8px) clamp(0.5em, 2vw, 3em);
@@ -650,11 +715,10 @@
 					/* Logo container with EvoSelf and GECCO */
 					.logo-container {
 					  display: flex;
-					  align-items: center;
+					  align-items: flex-start;
 					  gap: clamp(4px, 1vw, 12px);
 					  flex-shrink: 1;
 					  min-width: 0;
-					  overflow: hidden;
 					}
 					
 					/* Styling for the logo text container */
@@ -701,33 +765,65 @@
 					
 					@media (max-width: 768px) {
 					  .gecco-info {
-					    display: none;
+					    white-space: normal;
+					  }
+					  .gecco-info-title {
+					    font-size: clamp(7px, 2.5vw, 12px);
+					  }
+					  .gecco-info-subtitle,
+					  .gecco-info-date {
+					    font-size: clamp(6px, 2vw, 10px);
+					  }
+					  .letter-container {
+					    gap: 1px;
+					  }
+					  .logo-tile {
+					    width: 2px;
+					    height: 2px;
+					  }
+					  .logo-text-container {
+					    gap: 3px;
 					  }
 					}
 					
 					@media (max-width: 480px) {
 					  .gecco-logo {
-					    max-height: 22px;
+					    max-height: 18px;
 					  }
 					  .top-bar {
 					    padding: 4px 8px;
+					    gap: 6px;
+					  }
+					  .letter-container {
+					    gap: 1px;
+					  }
+					  .logo-tile {
+					    width: 2px;
+					    height: 2px;
+					  }
+					  .logo-text-container {
+					    gap: 2px;
+					  }
+					  .logo-container {
+					    gap: 4px;
+					  }
+					  .gecco-info-title {
+					    font-size: 8px;
+					  }
+					  .gecco-info-subtitle,
+					  .gecco-info-date {
+					    font-size: 7px;
 					  }
 					}
 					
 					.letter-container {
 					  display: grid;
-					  gap: clamp(1px, 0.2vw, 2px);
-					  height: clamp(12px, 3.5vw, 40px); /* Responsive height */
+					  gap: clamp(1px, 0.15vw, 2px);
 					}
-					
+
 					.logo-tile {
-					  width: clamp(1.5px, 0.4vw, 5px);
-					  height: clamp(1.5px, 0.4vw, 5px);
-					  min-width: clamp(1.5px, 0.4vw, 5px);
-					  min-height: clamp(1.5px, 0.4vw, 5px);
-					}
-					
-					.logo-tile-white {
+					  width: clamp(2px, 0.4vw, 5px);
+					  height: clamp(2px, 0.4vw, 5px);
 					  background-color: white;
 					}
 					
@@ -930,6 +1026,15 @@
 					  border-top: 1px solid rgba(255, 255, 255, 0.6);
 					  background-color: transparent;
 					}
+
+					@media screen and (max-width: 980px) {
+					  .spotlight .content,
+					  .spotlight .content p,
+					  #call-for-papers,
+					  #call-for-papers p {
+					    text-align: justify !important;
+					  }
+					}
 				  </style>
 				  
 				
@@ -1047,7 +1152,7 @@
 							<div class="spotlight">
 							  <div class="content">
 								<h2>Call for papers</h2>
-								<p>We invite authors to submit papers through the <a href="https://ssl.linklings.net/conferences/gecco/" target="_blank">GECCO submission system</a>. We encourage two categories of submissions: papers of up to four pages showcasing early research ideas and papers up to 8 pages presenting more substantial contributions (such as technical contributions, benchmarks, negative results, surveys). Page count excludes references and appendices and submissions should follow the Gecco format. We encourage submissions related to evolution and self-organisation that address the following questions:</p>
+								<p>We invite authors to submit papers through the <a href="https://ssl.linklings.net/conferences/gecco/" target="_blank">GECCO submission system</a>. We welcome two categories of submissions: short papers of up to four pages presenting early-stage research ideas, and full papers of up to eight pages reporting more substantial contributions (including technical advances, benchmarks, negative results, and surveys). Page limits exclude references and appendices; all submissions should follow the <a href="https://gecco-2026.sigevo.org/Paper-Submission-Instructions" target="_blank">GECCO format</a>. We welcome any work at the intersection of evolution and self-organisation, including but not limited to the following questions:</p>
 								<p><strong>What are the challenges of optimising self-organising systems?</strong>  Early studies of cellular automata employed primarily genetic programming for their optimisation <span class="cite">(Mitchell 1994, 1996)</span>. Numerous works have identified challenges in such set-ups: self-organising systems are characterised by a need for symmetry breaking <span class="cite">(Mitchell 1996)</span> and fitness landscapes with local optima <span class="cite">(Kauffman 1987, Greenbury 2022)</span>. Today the dominant training paradigm for Neural CA is gradient-based optimisation <span class="cite">(Mordvintsev)</span>. Although more powerful, it has been recently shown to be out-competed by modern neuro-evolution approaches in the presence of local optima <span class="cite">(Such 2024)</span>, noisy feedback <span class="cite">(Salimans et al 2017)</span> and non-stationarity <span class="cite">(Nisioti 2025)</span>. We welcome empirical and theoretical studies showcasing challenges and benefits of different optimisation approaches for self-organising systems. </p>
 
 								
