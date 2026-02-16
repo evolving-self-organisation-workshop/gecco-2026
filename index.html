@@ -169,7 +169,24 @@
 					  const patternDescriptionElement = document.getElementById("patternDescription");
 					  const patternQuoteElement = document.getElementById("patternQuote");
 					  const mutateButton = document.getElementById("mutateButton");
-					  const tileSize = 60; // Size of each tile
+					  
+					  // Calculate tile size based on viewport width for responsive design
+					  function getTileSize() {
+					    const vw = window.innerWidth;
+					    if (vw <= 480) return 18; // Small phones
+					    if (vw <= 768) return 28; // Tablets/large phones
+					    if (vw <= 1024) return 45; // Small laptops
+					    return 60; // Desktop
+					  }
+					  
+					  function getGapSize() {
+					    const vw = window.innerWidth;
+					    if (vw <= 480) return 2;
+					    if (vw <= 768) return 3;
+					    return 5;
+					  }
+					  
+					  let tileSize = getTileSize();
 					  let tiles = [];
 					  let gridColumns = 0;
 					  let gridRows = 0;
@@ -369,13 +386,19 @@
 				  
 					  // Function to recalculate and update the grid
 					  function updateGrid() {
+						tileSize = getTileSize(); // Recalculate tile size on update for responsiveness
+						const gap = getGapSize();
 						const gridWidth = grid.offsetWidth; // Get the width of the grid container
-						gridColumns = Math.floor(gridWidth / tileSize); // Calculate the number of columns based on the width
-						gridRows = Math.floor(gridColumns) / 2; // Let's keep the rows same as columns for a square grid
+						// Account for gaps when calculating number of columns that fit
+						gridColumns = Math.floor((gridWidth + gap) / (tileSize + gap));
+						// Use available height to calculate rows so the grid fills the viewport
+						const availableHeight = grid.parentElement.offsetHeight || window.innerHeight * 0.85;
+						gridRows = Math.floor((availableHeight + gap) / (tileSize + gap));
 				  
 						// Update the grid-template-columns and grid-template-rows based on the calculated number of columns and rows
 						grid.style.gridTemplateColumns = `repeat(${gridColumns}, ${tileSize}px)`;
 						grid.style.gridTemplateRows = `repeat(${gridRows}, ${tileSize}px)`;
+						grid.style.gap = `${gap}px`;
 				  
 						// Remove existing tiles
 						tiles.forEach(tile => grid.removeChild(tile));
@@ -606,10 +629,10 @@
 					.logo-container {
 					  display: flex;
 					  align-items: center;
-					  gap: 15px;
+					  gap: clamp(5px, 2vw, 15px);
 					  position: absolute;
 					  top: 10px;
-					  left: 5em;
+					  left: clamp(1em, 5vw, 5em);
 					  z-index: 100;
 					}
 					
@@ -617,26 +640,26 @@
 					.logo-text-container {
 					  display: flex;
 					  align-items: center;
-					  gap: 12px;
+					  gap: clamp(4px, 1.5vw, 12px);
 					}
 					
 					/* Styling for GECCO logo */
 					.gecco-logo {
-					  max-height: 100px;
+					  max-height: clamp(40px, 12vw, 100px);
 					  width: auto;
 					}
 					
 					.letter-container {
 					  display: grid;
-					  gap: 3px;
-					  height: 68px; /* Fixed height for all letters */
+					  gap: clamp(1px, 0.4vw, 3px);
+					  height: clamp(30px, 8vw, 68px); /* Responsive height */
 					}
 					
 					.logo-tile {
-					  width: 8px;
-					  height: 8px;
-					  min-width: 8px;
-					  min-height: 8px;
+					  width: clamp(3px, 1vw, 8px);
+					  height: clamp(3px, 1vw, 8px);
+					  min-width: clamp(3px, 1vw, 8px);
+					  min-height: clamp(3px, 1vw, 8px);
 					}
 					
 					.logo-tile-white {
@@ -684,9 +707,9 @@
 					.mutate-button {
 					  position: absolute;
 					  top: 29px;
-					  right: 5em;
-					  padding: 8px 16px;
-					  font-size: 14px;
+					  right: clamp(1em, 5vw, 5em);
+					  padding: clamp(4px, 1vw, 8px) clamp(8px, 2vw, 16px);
+					  font-size: clamp(10px, 1.5vw, 14px);
 					  font-weight: bold;
 					  color: white;
 					  background-color: #e91e63;
